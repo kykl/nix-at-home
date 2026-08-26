@@ -91,7 +91,7 @@
     #  thunderbird
     ];
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK..." # Replace with your actual public key
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIOogVS3hFPHV/ceLZIm6E4Q/Znv3O9AkFMWNtRhy362 kenneth.lee@gmail.com"
     ];
   };
 
