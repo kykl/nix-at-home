@@ -90,6 +90,9 @@
       kdePackages.kate
     #  thunderbird
     ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK..." # Replace with your actual public key
+    ];
   };
 
   # Install firefox.
@@ -115,8 +118,18 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
+  # Enable the OpenSSH daemon
+  services.openssh = {
+    enable = true;
+    settings = {
+      X11Forwarding = false;
+      PermitRootLogin = "no"; # "no", "yes", or "prohibit-password"
+      PasswordAuthentication = false; # Set to false for better security (forces SSH keys)
+    };
+  };
+
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
