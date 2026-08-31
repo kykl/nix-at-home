@@ -103,6 +103,7 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     git
+    pkgs.cloudflared
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -128,6 +129,9 @@
     };
   };
 
+  # Ensure the Bluetooth system service is active
+  services.blueman.enable = true; # Optional: Provides an alternate manager if Bluedevil fails
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -142,4 +146,15 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "26.05"; # Did you read the comment?
 
+  systemd.services.cloudflare-tunnel = {
+    description = "Cloudflare Tunnel Daemon";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.cloudflared}/bin/cloudflared tunnel --no-autoupdate run --token ea7c1a65-3bc6-46a0-88a3-1e1f2d01ad66";
+      Restart = "always";
+      User = "root"; # Can be hardened to a dedicated system user if secrets are handled via sops-nix/agenix
+    };
+  };
 }
