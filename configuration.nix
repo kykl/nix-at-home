@@ -103,7 +103,7 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     git
-    pkgs.cloudflared
+    noip2
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -146,15 +146,18 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "26.05"; # Did you read the comment?
 
-  systemd.services.cloudflare-tunnel = {
-    description = "Cloudflare Tunnel Daemon";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
+  systemd.services.noip2 = {
+    description = "No-IP Dynamic DNS Update Client";
+    after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
+    
     serviceConfig = {
-      ExecStart = "${pkgs.cloudflared}/bin/cloudflared tunnel --no-autoupdate run --token ea7c1a65-3bc6-46a0-88a3-1e1f2d01ad66";
+      Type = "forking";
+      # Replace with your No-IP username, password, and the domain you want to update
+      ExecStart = "${pkgs.noip2}/bin/noip2 -u your_username -p your_password -d yourhostname.ddns.net";
       Restart = "always";
-      User = "root"; # Can be hardened to a dedicated system user if secrets are handled via sops-nix/agenix
+      RestartSec = "5min";
     };
   };
+
 }
