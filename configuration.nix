@@ -103,7 +103,7 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     git
-    noip2
+    noip
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -154,10 +154,16 @@
     serviceConfig = {
       Type = "forking";
       # Replace with your No-IP username, password, and the domain you want to update
-      ExecStart = "${pkgs.noip2}/bin/noip2 -u your_username -p your_password -d yourhostname.ddns.net";
+      ExecStart = "${pkgs.noip}/bin/noip2 -u 3h46nwh -p hAXNxJxHMiao -d all.ddnskey.com";
       Restart = "always";
       RestartSec = "5min";
     };
   };
 
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = "no";
+    AllowHibernation = "no";
+    AllowHybridSleep = "no";
+    AllowSuspendThenHibernate = "no";
+  };
 }
