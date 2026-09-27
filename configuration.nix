@@ -153,6 +153,7 @@
     
     serviceConfig = {
       Type = "forking";
+      # Use bigfast google sign in to auth to noip 
       # Replace with your No-IP username, password, and the domain you want to update
       ExecStart = "${pkgs.noip}/bin/noip2 -u 3h46nwh -p hAXNxJxHMiao -d all.ddnskey.com";
       Restart = "always";
